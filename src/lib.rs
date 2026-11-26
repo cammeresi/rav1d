@@ -93,6 +93,7 @@ mod cdf;
 mod const_fn;
 pub mod cpu;
 mod ctx;
+pub(crate) mod ctypes;
 mod cursor;
 mod data;
 mod decode;

@@ -2,12 +2,12 @@ use std::cmp;
 use std::ffi::c_int;
 use std::mem::MaybeUninit;
 
-use libc::ptrdiff_t;
 use parking_lot::RwLock;
 use zerocopy::FromBytes;
 
 use crate::align::{Align16, AlignedVec2, ArrayDefault};
 use crate::ctx::CaseSet;
+use crate::ctypes::ptrdiff_t;
 use crate::disjoint_mut::DisjointMut;
 use crate::include::common::intops::{clip, iclip};
 use crate::include::dav1d::headers::{
