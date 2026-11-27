@@ -1,0 +1,32 @@
+name: build for wasm
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+jobs:
+  check-wasm32-unknown-unknown:
+    strategy:
+      matrix:
+        build: [
+          {name: "without asm", flags: "--no-default-features --features=bitdepth_8,bitdepth_16"},
+          {name: "with default features", flags: ""}
+        ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: install rust toolchain
+        id: toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+      - name: cache rust dependencies
+        uses: Swatinem/rust-cache@v2
+      # The tools crate needs a C library, so check only the library crate.
+      - name: cargo check ${{ matrix.build.name }}
+        run: |
+          cargo +${{ steps.toolchain.outputs.name }} check -p rav1d --target wasm32-unknown-unknown ${{ matrix.build.flags }}
